@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
         createAndConnected();
 
 
-    } // main Method
+    } // main Methodgit
 
     private void createAndConnected() {
 
