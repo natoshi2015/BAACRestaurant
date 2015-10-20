@@ -1,10 +1,15 @@
 package baac.it.natoshi.baacrestaurant;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -23,12 +28,18 @@ public class MainActivity extends AppCompatActivity {
     // Exp
     private UserTABLE objUserTABLE;
     private FoodTABLE objFoodTABLE;
+    private EditText userEditText, passwordEditText;
+    private String userString, passwordString;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //bind Widget
+        bindWidget();
+
         // Create & Conn  Database
         createAndConnected();
 
@@ -42,6 +53,63 @@ public class MainActivity extends AppCompatActivity {
 
         synJsontoSQLite();
     } // main Methodgit
+
+    private void bindWidget() {
+        userEditText = (EditText) findViewById(R.id.editText);
+        passwordEditText = (EditText) findViewById(R.id.editText2);
+
+    }
+
+    public void clickLogin(View view) {
+        userString = userEditText.getText().toString().trim();
+
+        passwordString = passwordEditText.getText().toString().trim();
+     //   errorDialog("Have Space","Please Fill All "+userString+" pass "+passwordString );
+        if (userString.equals("") || passwordString.equals("")) {
+            //Have space
+             errorDialog("Have Space","Please Fill All ");
+        } else {
+            // No space
+            checkUser();
+        }
+
+
+    }
+
+    private void checkUser() {
+
+        try {
+            String[] strMyResult = objUserTABLE.searchUser(userString);
+
+            if (passwordString.equals(strMyResult[2])) {
+                Toast.makeText(MainActivity.this,"Welcome"+strMyResult[3],Toast.LENGTH_LONG).show();
+
+            } else {
+                errorDialog("password false","Please Try again Password ");
+            }
+
+
+        }catch (Exception e){
+              errorDialog("No this user","No "+userString+" on my DB");
+        }
+
+    }
+
+    private void errorDialog(String strTitle, String strMessage) {
+        AlertDialog.Builder objBuilder = new AlertDialog.Builder(this);
+        objBuilder.setIcon(R.drawable.danger);
+        objBuilder.setTitle(strTitle);
+        objBuilder.setMessage(strMessage);
+        objBuilder.setCancelable(false);
+        objBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        objBuilder.show();
+        //return;
+    }
 
     private void synJsontoSQLite() {
 
