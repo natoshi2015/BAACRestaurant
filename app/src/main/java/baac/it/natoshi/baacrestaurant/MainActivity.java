@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void checkUser() {
-
+// test
         try {
             String[] strMyResult = objUserTABLE.searchUser(userString);
 
