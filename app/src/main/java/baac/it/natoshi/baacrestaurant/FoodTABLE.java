@@ -57,7 +57,7 @@ public class FoodTABLE {
                 objCursor.moveToNext();
             }
             // for
-
+  //
         }//if
         objCursor.close();
         return strResult;
