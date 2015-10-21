@@ -39,6 +39,7 @@ public class UserTABLE {
             if (objCursor != null) {
                 if(objCursor.moveToFirst()){
                     strResult = new String[objCursor.getColumnCount()];
+
                     strResult[0] = objCursor.getString(0);
                     strResult[1] = objCursor.getString(1);
                     strResult[2] = objCursor.getString(2);
